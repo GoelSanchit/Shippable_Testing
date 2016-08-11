@@ -1,4 +1,5 @@
 <html>
+
 <head>
 <title></title>
 </head>
@@ -8,13 +9,14 @@
 <input type="submit" name="submitButton">
 </form>
 </body>
+
 </html>
 
 <?php
 
 if(isset($_POST['submitButton']))
 {
-    //Example-> https://github.com/Shippable/support/issues
+    //https://github.com/GoelSanchit/Whizz_AppStore
     $input_url = $_POST['url'];
     //Break the input url in array format
     $input_url_array =  explode('/',$input_url);
@@ -27,14 +29,16 @@ if(isset($_POST['submitButton']))
 
     //url for the github Api, $input_url_array[3] contain organisation or username, put_url_array[3] contain repository name
     $url = "https://api.github.com/repos/".$input_url_array[3]."/".$input_url_array[4];
+    
     //call the function and receive the result in associative array format
     $result = curlRequestOnGitApi($url);
+    
     //Get total no of open issues using the $result array
     $total_open_issues = $result["open_issues_count"];
     echo "<br>Total Open Issues:<b>".$total_open_issues."</b><br>";
 
 
-    //Date and Time 1 day or 24 hours ago in ISO 8601 Format
+    //Date and Time 1 day or 24 hours ago in format
     $time_last24hr = date('Y-m-d\TH:i:s.Z\Z', strtotime('-1 day', time()));
     //url for the github Api with since parameter equal to time of last 24 hrs that return only issues updated at or after this time 
     $url = "https://api.github.com/repos/".$input_url_array[3]."/".$input_url_array[4]."/issues?since=".$time_last24hr;     
@@ -45,7 +49,7 @@ if(isset($_POST['submitButton']))
     echo "Number of open issues that were opened in the last 24 hours:<b>".$issues_last24hr."</b><br>";
 
 
-    //Date and Time 1 day or 24 hours ago in ISO 8601 Format
+    //Date and Time 1 day or 24 hours ago in Format
     $time_7daysago = date('Y-m-d\TH:i:s.Z\Z', strtotime('-7 day', time()));
     //url for the github Api with since parameter equal to time of 7 days ago that return only issues updated at or after this time 
     $url = "https://api.github.com/repos/".$input_url_array[3]."/".$input_url_array[4]."/issues?since=".$time_7daysago;
